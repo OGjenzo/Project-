@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Reclamation</title>
+</head>
+<body>
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>Submit your reclamations below:</p>
+
+    <form method="post" action="{% url 'reclamation' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>All Reclamations</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>User</th>
+                <th>Encrypted Content</th>
+                <th>Decrypted Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rec in reclamations %}
+                <tr>
+                    <td>{{ rec.timestamp }}</td>
+                    <td>{{ rec.user.username }}</td>
+                    <td>{{ rec.encrypted_content }}</td>
+                    <td>{{ rec.content|default:"N/A" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+
+</body>
+</html>
